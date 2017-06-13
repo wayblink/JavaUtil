@@ -1,3 +1,5 @@
+package com.way.sort;
+
 /** Util class for sort algorithms */
 public class SortUtil {
     
@@ -146,28 +148,19 @@ public class SortUtil {
         for(i=n/2-1;i>=0;i--){
             while(2*i+1<n){
                 j=2*i+1;
-                if((j+1)<n){
-                    if(a[j]<a[j+1])
-                        j++;
-                }
+                if((j+1)<n&&a[j]<a[j+1])
+                    j++;
                 if(a[i]<a[j]){
                     int temp=a[i];
                     a[i]=a[j];
                     a[j]=temp;
                     i=j;
-                }
-                else{
+                }else{
                     break;
                 }
             }
         }        
-        
-//        System.out.println("The big root heap:");
-//        for(int h=0;h<n;h++){
-//            System.out.println(a[h]);
-//        }
-//        System.out.println("-------------------");
-        
+                
         for(i=n-1;i>0;i--){
             int temp=a[0];
             a[0]=a[i];
@@ -175,20 +168,16 @@ public class SortUtil {
             k=0;
             while(2*k+1<i){
                 j=2*k+1;
-                if((j+1)<i){
-                    if(a[j]<a[j+1])
-                        j++;
-                }
+                if((j+1)<i&&a[j]<a[j+1])
+                    j++;
                 if(a[k]<a[j]){
                     temp=a[k];
                     a[k]=a[j];
                     a[j]=temp;
                     k=j;
-                }
-                else{
+                }else{
                     break;
                 }
-                    
             }
         }
     }
