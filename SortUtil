@@ -1,4 +1,3 @@
-
 /** Util class for sort algorithms */
 public class SortUtil {
     
@@ -193,82 +192,54 @@ public class SortUtil {
             }
         }
     }
-    
-    /**
-     * essential function for merge sort
-     * @param a
-     * @param b
-     * @param n
-     * @param len
-     */
-    static void mergeOne(int[] a,int[] b,int n,int len){
-        int i,j,k,s,e;
-        s=0;
-        while(s+len<n){
-            e=s+2*len-1;
-            e=e>=n?n-1:e;
-            k=s;
-            i=s;
-            j=s+len;
-            while(i<s+len&&j<=e){
-                if(a[i]<=a[j]){
-					b[k++]=a[i++];
-				}
-				else{
-					b[k++]=a[j++];
-				}
-            }
-            while(i<s+len){
-                b[k++]=a[i++];
-            }
-            while(j<=e){
-                b[k++]=a[j++];
-            }
-            s=e+1;
-			
-        }
-        if(s<n){
-            for(;s<n;s++){
-                b[s]=a[s];
-            }
-        }
-    }
-    
-    /**
-     * merge sort
-     * @param a
-     * @param n
-     */
-    public static void mergeSort(int a[],int n){
-        int h,len,f;
-        len=1;
-        f=0;
-        int[] p=new int[n];
-        while(len<n){
-            if(f==1){
-                mergeOne(p, a, n, len);
-            }else{
-                mergeOne(a, p, n, len);
-            }
-            len=len*2;
-            f=1-f;
-            if(f==1){
-                for(h=0;h<n;h++){
-                    a[h]=p[h];
-                }
-            }
-        }
             
-    }
-    
     /**
      * simple function for merge sort
      * @param a
      */
     public static void mergeSort(int[] a){
-        mergeSort(a, a.length);
+        mergeSort(a, 0,a.length-1);
     }
     
+    public static void mergeSort(int[] arr,int low,int high){
+        int mid=(low+high)/2;
+        if(low<high){
+            mergeSort(arr, low,mid);//归并排序前半部分
+            mergeSort(arr,mid+1,high);//归并排序后半部分
+            merge(arr,low,mid,high);//合并两部分
+        }
+    } 
+       
+    /**
+     * 合并算法
+     * @param arr
+     * @param low 左边界
+     * @param mid 分界
+     * @param high 右边界
+     */
+    public static void merge(int[] arr,int low,int mid,int high){
+        int[] temp=new int[high-low+1];
+        int i=low; //左指针
+        int j=mid+1; //右指针
+        int t=0; //新数组指针
+        while(i<=mid&&j<=high){
+            if(arr[i]<arr[j]){
+                temp[t++]=arr[i++];
+            }else{
+                temp[t++]=arr[j++];
+            }
+        }       
+        while(i<=mid){
+            temp[t++]=arr[i++];
+        }
+        while(j<=high){
+            temp[t++]=arr[j++];
+        }
+        for(int k=0;k<temp.length;k++){
+            arr[k+low]=temp[k];
+        }
+    }
+      
     /**
      * output the array 
      * only used for test
@@ -278,5 +249,5 @@ public class SortUtil {
         for(int i=0;i<a.length;i++){
             System.out.println(a[i]);
         }
-    }   
+    }
 }
