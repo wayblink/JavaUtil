@@ -1,235 +1,93 @@
 
 public class StringUtil {
     
- /**  
-     *  新建目录  
-     *  @param  folderPath  String  如  c:/fqf  
-     *  @return  boolean  
-     */  
-   public static  boolean  newFolder(String folderPath)  {   
-       File  myFolderPath  =  new  File(folderPath);   
-       if  (!myFolderPath.exists())  { 
-           String parentFolderPath=myFolderPath.getParent();            
-           File parentFolder=new File(parentFolderPath);
-           if(!parentFolder.exists()){
-               newFolder(parentFolderPath);
-           }            
-           myFolderPath.mkdir();  
-       }
-       return myFolderPath.exists();//返回是否创建成功
-   }
-   
-   /**  
-    *  新建文件  
-    *  @param  filePath  String  文件路径及名称  如c:/fqf.txt  
-    *  @return  boolean  
-    */  
-   public static boolean newFile(String  filePath)  {        
-       File  myFilePath  =  new  File(filePath);  
-       try  {  
-           if  (!myFilePath.exists())  { 
-               String parentFolderPath=myFilePath.getParent();
-               File parentFolder=new File(parentFolderPath);
-               if(!parentFolder.exists()){
-                   newFolder(parentFolderPath);
-               }
-               if  (!myFilePath.exists())  {  
-                   myFilePath.createNewFile();  
-               } 
-           }
-       } catch(IOException e)  {  
-           System.out.println("新建目录操作出错");  
-           e.printStackTrace();  
-       }
-       return myFilePath.exists();//返回是否创建成功           
-   }
-   
-   /**  
-    *  删除文件  
-    *  @param  filePathAndName  String  文件路径及名称  如c:/fqf.txt  
-    *  @param  fileContent  String  
-    *  @return  boolean  
-    */  
-   public static boolean  delFile(String  filePath)  {  
-           java.io.File  myDelFile  =  new  java.io.File(filePath);  
-           return myDelFile.delete();  
-   }  
-  
-  /**  
-   *  删除文件夹  
-   *  @param  filePathAndName  String  文件夹路径及名称  如c:/fqf  
-   *  @param  fileContent  String  
-   *  @return  boolean  
-   */  
-   public  static void  delFolder(String  folderPath)  {  
-       try{  
-           delAllFile(folderPath);  //删除完里面所有内容   
-           java.io.File  myFilePath  =  new  java.io.File(folderPath);  
-           myFilePath.delete();  //删除空文件夹  
-       }  
-       catch  (Exception  e)  {  
-           System.out.println("删除文件夹操作出错");  
-           e.printStackTrace();  
-       }      
-   }      
- 
-   /**  
-    *  删除文件夹里面的所有文件  
-    *  @param  path  String  文件夹路径  如  c:/fqf  
-    */  
- 
-   public static void  delAllFile(String  path)  {  
-       File  file  =  new  File(path);  
-       if  (!file.exists())  {  
-           return;  
-       }  
-       if  (!file.isDirectory())  {  
-           return;  
-       }  
-       String[]  tempList  =  file.list();  
-       File  temp  =  null;  
-       for  (int  i  =  0;  i  <  tempList.length;  i++)  {  
-           if  (path.endsWith(File.separator))  {  
-               temp  =  new  File(path  +  tempList[i]);  
-           }  
-           else  {  
-               temp  =  new  File(path  +  File.separator  +  tempList[i]);  
-           }  
-           if  (temp.isFile())  {  
-               temp.delete();  
-           }  
-           if  (temp.isDirectory())  {  
-               delAllFile(path+"/"+  tempList[i]);//先删除文件夹里面的文件  
-               delFolder(path+"/"+  tempList[i]);//再删除空文件夹  
-           }  
-       }  
-   } 
-
-    /**  
-     *  复制单个文件  
-     *  @param  oldPath  String  原文件路径  如：c:/fqf.txt  
-     *  @param  newPath  String  复制后路径  如：f:/fqf.txt 如果是文件夹就复制到这个文件夹下 
-     *  @return  boolean  
-     */  
-    public  static void  copyFile(String  oldPath,  String  newPath)  {  
-       try  {  
-           int  byteread  =  0;  
-           File  oldfile  =  new  File(oldPath);  
-           File  newFile  =  new  File(newPath);
-           if(!newFile.exists()){
-               newFolder(newFile.getAbsolutePath());
-           }
-           if(newFile.isDirectory()){
-               newFile=new File(newFile.getAbsoluteFile()+File.separator+oldfile.getName());
-           }        
-           if  (oldfile.exists())  {  //文件存在时  
-               InputStream  inStream  =  new  FileInputStream(oldPath);  //读入原文件 
-               FileOutputStream  fs  =  new  FileOutputStream(newFile);  
-               byte[]  buffer  =  new  byte[1444];  
-               while  (  (byteread  =  inStream.read(buffer))  !=  -1)  {  
-                   fs.write(buffer,  0,  byteread);  
-               }  
-               inStream.close();  
-           }  
-       }  
-       catch  (Exception  e)  {  
-           System.out.println("复制单个文件操作出错");  
-           e.printStackTrace();  
-       }  
-    }  
-
-    /**  
-     *  复制整个文件夹内容  
-     *  @param  oldPath  String  原文件路径  如：c:/fqf  
-     *  @param  newPath  String  复制后路径  如：f:/fqf/ff  
-     *  @return  boolean  
-     */  
-    public  static void  copyFolder(String  oldPath,  String  newPath)  {     
-       try  {  
-           (new  File(newPath)).mkdirs();  //如果文件夹不存在  则建立新文件夹  
-           File  a=new  File(oldPath);  
-           String[]  file=a.list();  
-           File  temp=null;  
-           for  (int  i  =  0;  i  <  file.length;  i++)  {  
-               if(oldPath.endsWith(File.separator)){  
-                   temp=new  File(oldPath+file[i]);  
-               }  
-               else{  
-                   temp=new  File(oldPath+File.separator+file[i]);  
-               }  
+    /**
+     * 字符数组转字符串
+     * @param arr
+     * @return
+     */
+    String arrayToString(char[] arr){
+        return String.copyValueOf(arr);
+    }
     
-               if(temp.isFile()){  
-                   FileInputStream  input  =  new  FileInputStream(temp);  
-                   FileOutputStream  output  =  new  FileOutputStream(newPath  +  "/"  + 
-                           (temp.getName()).toString());  
-                   byte[]  b  =  new  byte[1024  *  5];  
-                   int  len;  
-                   while  (  (len  =  input.read(b))  !=  -1)  {  
-                       output.write(b,  0,  len);  
-                   }  
-                   output.flush();  
-                   output.close();  
-                   input.close();  
-               }  
-               if(temp.isDirectory()){//如果是子文件夹  
-                   copyFolder(oldPath+"/"+file[i],newPath+"/"+file[i]);  
-               }  
-           }  
-       }  
-       catch  (Exception  e)  {  
-           System.out.println("复制整个文件夹内容操作出错");  
-           e.printStackTrace();  
-    
-       }  
-    
-    }  
-
-    /**  
-     *  移动文件到指定目录  
-     *  @param  oldPath  String  如：c:/fqf.txt  
-     *  @param  newPath  String  如：d:/fqf.txt  
-     */  
-    public  void  moveFile(String  oldPath,  String  newPath)  {  
-       copyFile(oldPath,  newPath);  
-       delFile(oldPath);     
-    } 
-    
-    /**  
-     *  移动文件到指定目录  
-     *  @param  oldPath  String  如：c:/fqf.txt  
-     *  @param  newPath  String  如：d:/fqf.txt  
-     */  
-    public  void  moveFolder(String  oldPath,  String  newPath)  {  
-       copyFolder(oldPath,  newPath);  
-       delFolder(oldPath);  
-    }  
-
-    public static ArrayList<File> allFilesInForder(String path,boolean isRecersive) throws FileNotFoundException {
-        File file = new File(path);
-        ArrayList<File> list = new ArrayList<File>();
-        
-        if (!file.exists()) { 
-            System.out.println("文件不存在!");
-            throw new FileNotFoundException("文件不存在!");
-        }else{
-            File[] files = file.listFiles();
-            for(File f:files){
-                list.add(f);
-            }       
-            if(!isRecersive){
-                 return list;     
-            }else{
-                Stack<File> dirStack=new Stack<File>();
-                for (File file2 : files) {
-                    if (file2.isDirectory()) {
-                        dirStack.push(file2);
-                    }
-                }
-                while(!dirStack.isEmpty()){
-                    list.addAll(allFilesInForder(dirStack.pop().getAbsolutePath(), isRecersive));
-                }
-            }
-           return list;
+    /**
+     * 字符串左旋,"abcd"->"bcda"
+     * @param str
+     * @return
+     */
+    static String rotateLeft(String str){
+        char[] arr=str.toCharArray();
+        char t=arr[0];
+        for(int i=1;i<arr.length;i++){
+            arr[i-1]=arr[i];
         }
+        arr[arr.length-1]=t;
+        return String.copyValueOf(arr);
+    }
+
+    /**
+     * 字符串右旋,"abcd"->"dabc"
+     * @param str
+     * @return
+     */
+    static String rotateRight(String str){
+        char[] arr=str.toCharArray();
+        char t=arr[arr.length-1];
+        for(int i=arr.length-1;i>0;i--){
+            arr[i]=arr[i-1];
+        }
+        arr[0]=t;
+        return String.copyValueOf(arr);
+    }
+    
+    /**
+     * 左旋n位
+     * @param str
+     * @param n
+     * @return
+     */
+    static String rotateLeft(String str,int n){
+        char[] arr=str.toCharArray();
+        String result=str;
+        for(int i=0;i<n;i++){
+            result=rotateLeft(result);
+        }
+        return result;
+    }
+    
+    /**
+     * 右旋n位
+     * @param str
+     * @param n
+     * @return
+     */
+    static String rotateRight(String str,int n){
+        char[] arr=str.toCharArray();
+        String result=str;
+        for(int i=0;i<n;i++){
+            result=rotateRight(result);
+        }
+        return result;
+    }
+    
+    /**
+     * 字符串翻转
+     * @param str
+     * @return
+     */
+    static String reserve(String str){
+        char[] arr=str.toCharArray();
+        for(int i=0;i<(arr.length%2==1?arr.length/2-1:arr.length/2);i++){
+            char temp=arr[i];
+            arr[i]=arr[arr.length-1-i];
+            arr[arr.length-1-i]=temp;
+        }
+        return String.copyValueOf(arr);
+    }
+    
+    
+    public static void main(String[] args){
+        String str="abcdef";
+        System.out.println(rotateLeft(str));
     }
 }
