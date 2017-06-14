@@ -4,6 +4,9 @@ My Own Util Library
 FileUtil.java
 工作过程中总结出来的一些文件操作方法
 
+StringUtil.java
+是常见的字符串操作算法
+
 SortUtil.java
 其中排序算法的实现示例：冒泡排序，选择排序，插入排序，希尔排序，快速排序，堆排序，归并排序
 
