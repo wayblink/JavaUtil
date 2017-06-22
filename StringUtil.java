@@ -85,6 +85,32 @@ public class StringUtil {
         return String.copyValueOf(arr);
     }
     
+    /**
+     * 从字符串中删除与传入参数字符串匹配的字符串
+     * @param input
+     * @param flag
+     * @return
+     */
+    public static String deleteFlag(String input,String flag){
+        StringBuilder sb=new StringBuilder();
+        int step=flag.length();
+        int i=0,j=i+step;
+        int n=input.length();
+        while(i<n&&j-i==step){
+            if(input.substring(i,j).equals(flag)){
+                i+=step;
+                j+=step;
+            }else{
+                sb.append(input.substring(i,j));
+                i+=step;
+                j+=step;
+            }
+            if(j>n){    
+                j=n;
+            }
+        }
+        return sb.toString();
+    }
     
     public static void main(String[] args){
         String str="abcdef";
