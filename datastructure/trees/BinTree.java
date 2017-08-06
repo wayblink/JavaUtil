@@ -4,34 +4,34 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
 
-public class TreeNode {
+public class BinTree {
 
     int val;
-    TreeNode left;
-    TreeNode right;
-    public TreeNode(){}
+    BinTree left;
+    BinTree right;
+    public BinTree(){}
     
-    public TreeNode(int val){
+    public BinTree(int val){
         this.val=val;
     }
     
-    public static TreeNode build(int[] arr){
+    public static BinTree build(int[] arr){
         if(arr.length==0){
             return null;
         }
-        TreeNode root=new TreeNode(arr[0]);
-        LinkedList<TreeNode> queue=new LinkedList<>();
+        BinTree root=new BinTree(arr[0]);
+        LinkedList<BinTree> queue=new LinkedList<>();
         queue.add(root);
         int count=1;
         int length=arr.length;
         while(count<length){
-            TreeNode node=queue.poll();
+            BinTree node=queue.poll();
             if(count<length){
-                node.left=new TreeNode(arr[count++]);
+                node.left=new BinTree(arr[count++]);
                 queue.add(node.left);
             }
             if(count<length){
-                node.right=new TreeNode(arr[count++]);
+                node.right=new BinTree(arr[count++]);
                 queue.add(node.right);
             }
         }
@@ -39,11 +39,11 @@ public class TreeNode {
         
     }
     
-    public static TreeNode construct(int[] preArr, int preStart, int[] inArr, int inStart, int length){
+    public static BinTree construct(int[] preArr, int preStart, int[] inArr, int inStart, int length){
         if(preArr==null||inArr==null||length==0){
             return null;
         }
-        TreeNode root = new TreeNode(preArr[preStart]);
+        BinTree root = new BinTree(preArr[preStart]);
         int leftLength = 0;
         while(leftLength < length) {
             if (inArr[leftLength + inStart] == root.val){
@@ -57,7 +57,7 @@ public class TreeNode {
         return root;
     }
 
-    public static TreeNode construct(int[] preArr, int[] inArr){
+    public static BinTree construct(int[] preArr, int[] inArr){
         if(preArr.length == inArr.length){
             return construct(preArr, 0, inArr, 0, preArr.length);
         }else{
@@ -67,10 +67,10 @@ public class TreeNode {
     }
     
     public void levelTraverse(){
-        LinkedList<TreeNode> queue=new LinkedList<>();
+        LinkedList<BinTree> queue=new LinkedList<>();
         queue.add(this);
         while(!queue.isEmpty()){
-            TreeNode node =queue.poll();
+            BinTree node =queue.poll();
             System.out.println(node.val);
             if(node.left!=null){
                 queue.add(node.left);
@@ -83,7 +83,7 @@ public class TreeNode {
     
     public ArrayList<ArrayList<Integer>> levelTraverseAsList(){
         ArrayList<ArrayList<Integer>> result=new ArrayList<>();
-        LinkedList<TreeNode> cur=new LinkedList<>(),next=new LinkedList<>();
+        LinkedList<BinTree> cur=new LinkedList<>(),next=new LinkedList<>();
         if(this==null){
             return result;
         }else{
@@ -92,7 +92,7 @@ public class TreeNode {
         while(!cur.isEmpty()){
             ArrayList<Integer> curLevel=new ArrayList<>();
             while(!cur.isEmpty()){
-                TreeNode node = cur.poll();
+                BinTree node = cur.poll();
                 curLevel.add(node.val);
                 System.out.print(node.val+" ");
                 if(node.left!=null){
@@ -104,7 +104,7 @@ public class TreeNode {
             }
             System.out.println();
             result.add(curLevel);
-            LinkedList<TreeNode> temp=new LinkedList<>();
+            LinkedList<BinTree> temp=new LinkedList<>();
             temp=cur;
             cur=next;
             next=temp;
@@ -117,12 +117,12 @@ public class TreeNode {
             return null;
         }
         ArrayList<ArrayList<Integer>> result=new ArrayList<>();
-        LinkedList<TreeNode> cur=new LinkedList<>(),next=new LinkedList<>();
+        LinkedList<BinTree> cur=new LinkedList<>(),next=new LinkedList<>();
         cur.add(this);       
         int zigzag=0;
         while(!cur.isEmpty()){
             ArrayList<Integer> curLevel=new ArrayList<>();
-            TreeNode node=cur.poll();
+            BinTree node=cur.poll();
             curLevel.add(node.val);
             System.out.print(node.val+" ");
             if(zigzag==0){
@@ -147,7 +147,7 @@ public class TreeNode {
                 System.out.println();
                 zigzag=1-zigzag;
                 result.add(curLevel);
-                LinkedList<TreeNode> temp=cur;
+                LinkedList<BinTree> temp=cur;
                 cur=next;
                 next=temp;
             }
@@ -193,8 +193,8 @@ public class TreeNode {
     }
     
     public void preOrderTraverse2(){
-        LinkedList<TreeNode> stack=new LinkedList<>();
-        TreeNode node=this;
+        LinkedList<BinTree> stack=new LinkedList<>();
+        BinTree node=this;
         while(node!=null||!stack.isEmpty()){
             while(node!=null){
                 System.out.print(node.val+" ");
@@ -208,8 +208,8 @@ public class TreeNode {
         }
     }
     public void inOrderTraverse2(){
-        LinkedList<TreeNode> stack=new LinkedList<>();
-        TreeNode node=this;
+        LinkedList<BinTree> stack=new LinkedList<>();
+        BinTree node=this;
         while(node!=null||!stack.isEmpty()){
             while(node!=null){
                 stack.push(node);
@@ -230,16 +230,16 @@ public class TreeNode {
      * @param root
      */
     public void postOrderTraverse2() {
-        TreeNode root=this;
+        BinTree root=this;
         if (root != null) {
             // 用来保存节点的栈
-            ArrayList<TreeNode> stack = new ArrayList<TreeNode>();
+            ArrayList<BinTree> stack = new ArrayList<BinTree>();
             // 用来保存标志位的栈
             ArrayList<Integer> stack2 = new ArrayList<Integer>();
             // 两个栈共用的栈指针
             int top = -1;
             int tag;
-            TreeNode current = root;
+            BinTree current = root;
             do {
                 //将所有左子节点进栈
                 while (current != null) {
@@ -287,7 +287,7 @@ public class TreeNode {
         
         int[] preArr = {1,2,4,7,3,5,6,8};
         int[] inArr = {4,7,2,1,5,3,8,6};
-        TreeNode root = construct(preArr, inArr);
+        BinTree root = construct(preArr, inArr);
         root.levelTraverse();
         System.out.println();
         root.preOrderTraverse1();
